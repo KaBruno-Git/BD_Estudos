@@ -55,7 +55,9 @@ INSERT INTO Produto (NomeProduto, Preco, Estoque) VALUES
 ('Teclado Redragon Kumara', 900.09,11),
 ('Xbox One', 1767.90,8),
 ('Headset Pulse Elite', 768.90,56),
-('Entendendo SQL', 126.98,12);
+('Entendendo SQL', 85.58,12),
+('FINI', 14.90, 90),
+('PEPSI', 16.78, 89);
 
 INSERT INTO Pedido (IdCliente, DataPedido) VALUES
 (1, '2026-05-01'),
@@ -72,16 +74,20 @@ INSERT INTO Pedido (IdCliente, DataPedido) VALUES
 INSERT INTO ItemPedido (IdPedido, IdProduto, Quantidade, ValorUnitario) VALUES
 (7, 8, 2, 1767.90),
 (7, 2, 1,6075.98),
+(7, 12, 2, 16.78),
 (8, 1, 2, 3800.00),
 (8, 2, 3, 6075.98),
 (3, 10, 2, 126.98),
+(3, 11, 4, 14.90),
 (4, 4, 2, 8999.99),
 (5, 3, 1, 2556.00),
 (2, 6, 2, 5600.92),
 (2, 4, 1, 8999.99),
 (2, 5, 1, 823.00),
 (9, 6, 1, 5600.00),
-(10, 10, 5, 126.98),
+(10, 10, 5, 85.58),
 (6, 7, 3, 900.90),
 (1, 1, 3, 6075.90),
-(1, 5, 1, 823.00);
+(1, 5, 1, 823.00),
+(1, 11, 2, 14.90),
+(1, 12, 1, 16.78);
