@@ -1,0 +1,79 @@
+CREATE TABLE Proprietario(
+	Id_Prop INT PRIMARY KEY IDENTITY(1,1),
+	Nome_Prop VARCHAR(100) NOT NULL,
+	cpf_Prop VARCHAR(14) NOT NULL UNIQUE,
+	Tel_Prop VARCHAR(15),
+	Email_Prop VARCHAR(100) UNIQUE
+);
+
+CREATE TABLE Corretor(
+	Id_Corr INT PRIMARY KEY IDENTITY (1,1),
+	Nome_Corr VARCHAR(100) NOT NULL,
+	Creci VARCHAR(20) NOT NULL UNIQUE,
+	Tel_Corr VARCHAR(15) NOT NULL UNIQUE,
+	Email_Corr VARCHAR(100),
+	Comissao DECIMAL(5,2) NOT NULL
+);
+
+CREATE TABLE Imovel(
+	Id_Imovel INT PRIMARY KEY IDENTITY(1,1),
+	Id_Prop INT NOT NULL,
+	Id_Corr INT NOT NULL,
+	Tipo_Imovel VARCHAR(30) NOT NULL,
+	Endereco VARCHAR(200) NOT NULL,
+	Cidade VARCHAR(200) NOT NULL,
+	Area_M2 DECIMAL(10,2) NOT NULL,
+	Valor_Imovel DECIMAL(15,2) NOT NULL,
+	Status_Imovel VARCHAR(20) NOT NULL DEFAULT 'Disponivel',
+	Finalidade VARCHAR(10) NOT NUlL CHECK (Finalidade IN('Venda','Aluguel')),
+	FOREIGN KEY (Id_Prop) REFERENCES Proprietario(Id_Prop),
+	FOREIGN KEY (Id_Corr) REFERENCES Corretor(Id_Corr)
+);
+
+CREATE TABLE Cliente(
+	Id_Cliente INT PRIMARY KEY IDENTITY(1,1),
+	Nome_Cliente VARCHAR(100) NOT NULL,
+	cpf_Cliente VARCHAR(14) NOT NULL UNIQUE,
+	Tel_Cliente VARCHAR(15),
+	Interesse VARCHAR(10) NOT NULL CHECK (Interesse IN('Compra','Aluguel'))
+);
+
+CREATE TABLE Visita(
+	Id_Visita INT PRIMARY KEY IDENTITY(1,1),
+    Id_Cliente INT NOT NULL,
+	Id_Imovel INT NOT NULL,
+	Id_Corr INT NOT NULL,
+	Data_Visita DATETIME NOT NULL,
+	Status_Visita VARCHAR(20) NOT NULL DEFAULT 'Agendada' CHECK (Status_Visita IN('Agendada','Realizada','Cancelada')),
+	Observacao VARCHAR(300),
+    FOREIGN KEY (Id_Cliente) REFERENCES Cliente(Id_Cliente),
+	FOREIGN KEY (Id_Imovel) REFERENCES Imovel(Id_Imovel),
+	FOREIGN KEY (Id_Corr) REFERENCES Corretor(Id_Corr)
+);
+
+CREATE TABLE Contrato(
+	Id_Contrato INT PRIMARY KEY IDENTITY(1,1),
+	Id_Imovel INT NOT NULL,
+	Id_Cliente INT NOT NULL,
+	Id_Corr INT NOT NULL,
+	Tipo_Contrato VARCHAR(10) NOT NULL CHECK (Tipo_Contrato IN('Venda','Aluguel')),
+	Valor_Contrato DECIMAL(15,2) NOT NULL,
+	Data_Assinatura DATE NOT NULL,
+	Data_Encerramento DATE,
+	Status_Contrato VARCHAR(20) NOT NULL DEFAULT 'Ativo' CHECK (Status_Contrato IN('Ativo','Cancelado','Encerrado')),
+	FOREIGN KEY (Id_Imovel) REFERENCES Imovel(Id_Imovel),
+	FOREIGN KEY (Id_Cliente) REFERENCES Cliente(Id_Cliente),
+	FOREIGN KEY (Id_Corr) REFERENCES Corretor(Id_Corr)
+);
+
+CREATE TABLE Auditoria(
+	Id_Auditoria INT PRIMARY KEY IDENTITY(1,1),
+	Tabela_Alterada VARCHAR(50) NOT NULL,
+	Operacao VARCHAR(10) NOT NULL,
+	Id_Registro INT NOT NULL,
+	Data_Operacao DATETIME NOT NULL DEFAULT GETDATE(),
+	Observacao VARCHAR(500)
+);
+
+CREATE INDEX IX_ValorImovel ON Imovel(Valor_Imovel);
+CREATE INDEX IX_StatusImovel ON Imovel(Status_Imovel);
